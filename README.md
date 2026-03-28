@@ -10,6 +10,7 @@ Modern Neovim setup powered by [LazyVim](https://www.lazyvim.org/) with AI-enhan
 - 🎨 **Auto-formatting** with Conform.nvim
 - 🔍 **Fuzzy Finding** with FzfLua
 - 🌳 **Git Integration** with Lazygit
+- 🎫 **JIRA Integration** with one-key ticket access
 - 🧪 **Code Linting** with nvim-lint
 - 🔧 **SonarLint** for code quality analysis
 
@@ -139,6 +140,58 @@ Leader key is `<Space>`
 | `<leader>lg` | Open Lazygit                 |
 | `<leader>am` | Generate commit message (AI) |
 
+### 🎫 JIRA Integration
+
+**Browser Actions** (no API token needed):
+
+| Key          | Action                             |
+| ------------ | ---------------------------------- |
+| `<leader>jo` | Open ticket under cursor/selection |
+| `<leader>jp` | Open ticket (prompt)               |
+| `<leader>jb` | Open JIRA board                    |
+| `<leader>jc` | Create new issue                   |
+| `<leader>jy` | Copy ticket URL to clipboard       |
+
+**Terminal Actions** (requires API token):
+
+| Key          | Action                           |
+| ------------ | -------------------------------- |
+| `<leader>jv` | View ticket details in terminal  |
+| `<leader>js` | Search tickets in terminal       |
+| `<leader>jm` | List my assigned tickets         |
+| `<leader>jr` | List recent tickets (last 7days) |
+| `<leader>jt` | List tickets by status           |
+
+**Commands:**
+
+- `:JiraOpen [TICKET]` - Open ticket in browser
+- `:JiraView [TICKET]` - View ticket in terminal
+- `:JiraSearch [QUERY]` - Search tickets (text or JQL)
+- `:JiraMy` - List your assigned tickets
+- `:JiraRecent` - List recent tickets
+- `:JiraBoard` - Open board in browser
+- `:JiraCreate` - Create new issue
+- `:JiraSetUrl [URL]` - Set JIRA instance URL
+
+**Setup:**
+
+Basic (browser-only features) - Add to `~/.zshrc`:
+
+```bash
+export ATLASSIAN_INSTANCE_URL="https://your-company.atlassian.net"
+```
+
+Advanced (terminal features) - Also add:
+
+```bash
+export ATLASSIAN_EMAIL="your-email@company.com"
+export ATLASSIAN_API_TOKEN="your-api-token"
+```
+
+Get API token: https://id.atlassian.com/manage-profile/security/api-tokens
+
+See [docs/JIRA_NEOVIM.md](docs/JIRA_NEOVIM.md) for detailed usage and examples.
+
 ## 🔧 Customization
 
 ### Change Leader Key
@@ -199,12 +252,51 @@ gh auth refresh -s copilot
 :Mason
 ```
 
+## � MCP Integration (Model Context Protocol)
+
+Enhance your AI assistants with JIRA, Confluence, and other integrations via MCP servers.
+
+### Quick Setup
+
+```bash
+# Run the installation script
+chmod +x scripts/install-mcp.sh
+./scripts/install-mcp.sh
+```
+
+This will:
+
+- Install the Atlassian MCP server
+- Configure JIRA/Confluence access
+- Set up environment variables
+- Optionally configure Claude Desktop
+
+### Manual Setup
+
+See [docs/MCP_SETUP.md](docs/MCP_SETUP.md) for detailed instructions on:
+
+- Atlassian JIRA & Confluence integration
+- Creating API tokens
+- Configuring for Claude Desktop or VS Code Copilot
+- Available MCP commands
+- Troubleshooting
+
+### Usage Examples
+
+Once configured, you can ask your AI assistant:
+
+- "Create a JIRA ticket for this bug"
+- "Show me all open issues assigned to me"
+- "Add a comment to issue ABC-123"
+- "Search Confluence for API documentation"
+
 ## 📚 Resources
 
 - [LazyVim Documentation](https://www.lazyvim.org/)
 - [Neovim Documentation](https://neovim.io/doc/)
 - [GitHub Copilot](https://github.com/features/copilot)
 - [Mason Registry](https://mason-registry.dev/registry/list)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
 
 ## 📄 License
 

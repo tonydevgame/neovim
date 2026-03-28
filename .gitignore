@@ -1,0 +1,50 @@
+# Environment files with sensitive data
+.env
+.env.local
+.env.*.local
+.env.template
+
+# API tokens and credentials
+**/api-tokens.txt
+**/credentials.json
+
+# Claude Desktop config (contains API tokens)
+claude_desktop_config.json
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Backup files
+*.backup
+*.bak
+
+# Log files
+*.log
+logs/
+
+# Node modules (if installing MCP servers locally)
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+ENV/
+
+# Lazy.nvim (plugin files)
+lazy-lock.json
