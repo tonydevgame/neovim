@@ -9,7 +9,6 @@ return {
         "typescript-language-server",
         "css-lsp",
         "html-lsp",
-        "eslint-lsp",
         "tailwindcss-language-server",
         "svelte-language-server",
         "prisma-language-server",
@@ -103,6 +102,22 @@ return {
         vue                = { "eslint_d" },
         python             = { "pylint" },
       },
+    },
+  },
+
+  -- Disable the eslint LSP server — it throws circular JSON errors with React
+  -- flat configs. eslint_d via nvim-lint handles linting instead.
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        eslint = { enabled = false },
+      },
+    },
+    -- Free up <leader>cc for CopilotChat; move codelens to <leader>cL
+    keys = {
+      { "<leader>cc", false },
+      { "<leader>cL", vim.lsp.codelens.run, desc = "Run Codelens" },
     },
   },
 }
