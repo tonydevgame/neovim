@@ -240,16 +240,86 @@ function M.display_ticket(ticket_data)
   
   if ticket_data.fields.description then
     local desc = ticket_data.fields.description
-    -- Simple text extraction (Atlassian Document Format)
+    -- Handle Atlassian Document Format (ADF)
     if type(desc) == "table" and desc.content then
       for _, block in ipairs(desc.content) do
         if block.type == "paragraph" and block.content then
+          local line_text = ""
           for _, text_node in ipairs(block.content) do
             if text_node.text then
-              table.insert(lines, text_node.text)
+              line_text = line_text .. text_node.text
             end
           end
+          if line_text ~= "" then
+            table.insert(lines, line_text)
+          end
+        elseif block.type == "heading" and block.content then
+          local heading = ""
+          for _, text_node in ipairs(block.content) do
+            if text_node.text then
+              heading = heading .. text_node.text
+            end
+          end
+          if heading ~= "" then
+            table.insert(lines, "")
+            table.insert(lines, "## " .. heading)
+          end
+        elseif block.type == "bulletList" and block.content then
+          for _, item in ipairs(block.content) do
+            if item.content then
+              for _, para in ipairs(item.content) do
+                if para.content then
+                  local bullet_text = ""
+                  for _, text_node in ipairs(para.content) do
+                    if text_node.text then
+                      bullet_text = bullet_text .. text_node.text
+                    end
+                  end
+                  if bullet_text ~= "" then
+                    table.insert(lines, "  • " .. bullet_text)
+                  end
+                end
+              end
+            end
+          end
+        elseif block.type == "orderedList" and block.content then
+          for i, item in ipairs(block.content) do
+            if item.content then
+              for _, para in ipairs(item.content) do
+                if para.content then
+                  local list_text = ""
+                  for _, text_node in ipairs(para.content) do
+                    if text_node.text then
+                      list_text = list_text .. text_node.text
+                    end
+                  end
+                  if list_text ~= "" then
+                    table.insert(lines, "  " .. i .. ". " .. list_text)
+                  end
+                end
+              end
+            end
+          end
+        elseif block.type == "codeBlock" then
+          table.insert(lines, "")
+          table.insert(lines, "```")
+          if block.content then
+            for _, text_node in ipairs(block.content) do
+              if text_node.text then
+                for code_line in text_node.text:gmatch("[^\r\n]+") do
+                  table.insert(lines, code_line)
+                end
+              end
+            end
+          end
+          table.insert(lines, "```")
+          table.insert(lines, "")
         end
+      end
+    elseif type(desc) == "string" then
+      -- Plain text description
+      for line in desc:gmatch("[^\r\n]+") do
+        table.insert(lines, line)
       end
     else
       table.insert(lines, tostring(desc))
